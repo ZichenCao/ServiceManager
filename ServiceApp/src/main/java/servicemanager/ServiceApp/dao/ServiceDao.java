@@ -38,11 +38,10 @@ public class ServiceDao {
 		query.setParameter("user", user);
 		List<Service> resultList = query.getResultList();
 		return resultList != null ? resultList : new ArrayList<Service>();
-
 	}
 
-	public Service findServicesByName(String name, String user) {
-		TypedQuery<Service> query = em.createNamedQuery(Service.FIND_BY_USER, Service.class);
+	public Service findServiceByName(String name, String user) {
+		TypedQuery<Service> query = em.createNamedQuery(Service.FIND_BY_NAME_AND_USER, Service.class);
 		query.setParameter("name", name);
 		query.setParameter("user", user);
 		return query.getSingleResult();

@@ -25,9 +25,9 @@ public class ServiceUtil {
 	 * @return
 	 */
 	public static ServiceResponseModel convertServiceToResponseModel(Service service) {
-		if (service == null) {
+		if (service == null) 
 			throw new IllegalArgumentException("No service to convert");
-		}
+		
 		ServiceResponseModel responseModel = new ServiceResponseModel();
 		responseModel.setId(service.getId());
 		responseModel.setName(service.getName());
@@ -64,10 +64,9 @@ public class ServiceUtil {
 	 */
 	public static void updateServiceByRequestModel(Service service, ServiceRequestModel requestModel) {
 		validRequestModel(requestModel);
-		if (service.getName().equalsIgnoreCase(requestModel.getName())) {
+		if (service.getName().equalsIgnoreCase(requestModel.getName())) 
 			throw new IllegalArgumentException(
 					String.format("Not able to find the servie with name: %s", requestModel.getName()));
-		}
 
 		service.setUrl(requestModel.getUrl());
 		service.setUpdateDate(new Date());
@@ -80,9 +79,8 @@ public class ServiceUtil {
 	 * @param user
 	 */
 	public static void validUser(Service service, String user) {
-		if (service != null && !service.getCreatedBy().equalsIgnoreCase(user)) {
+		if (service != null && !service.getCreatedBy().equalsIgnoreCase(user)) 
 			throw new IllegalArgumentException(String.format("User: %s is not the creator of service: %s", user, service.getName()));
-		}
 	}
 
 	/**
@@ -107,9 +105,8 @@ public class ServiceUtil {
 	 * @param url
 	 */
 	public static void validURL(String url) {
-		if (!Pattern.matches(URL_PATTERN, url)) {
+		if (!Pattern.matches(URL_PATTERN, url)) 
 			throw new IllegalArgumentException("URL is following standard pattern");
-		} 
 	}
 
 }

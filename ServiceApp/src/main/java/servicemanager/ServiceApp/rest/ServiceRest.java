@@ -137,10 +137,4 @@ public class ServiceRest {
 		return user;
 	}
 	
-	
-	
-	
-	
-	
-	
 }

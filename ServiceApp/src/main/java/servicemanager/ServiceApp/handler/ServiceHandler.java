@@ -49,7 +49,7 @@ public class ServiceHandler {
 	}
 
 	public ServiceResponseModel getServiceByName(String name, String user) {
-		Service service = serviceDao.findServicesByName(name, user);
+		Service service = serviceDao.findServiceByName(name, user);
 		return ServiceUtil.convertServiceToResponseModel(service);
 	}
 
@@ -60,9 +60,9 @@ public class ServiceHandler {
 
 	public void updateService(long id, ServiceRequestModel requestModel, String user) {
 		Service service = serviceDao.getById(id);
-		if (service == null) {
+		if (service == null) 
 			throw new IllegalArgumentException(String.format("Not able to find the servie with id: %s", id));
-		}
+		
 		ServiceUtil.validUser(service, user);
 		ServiceUtil.updateServiceByRequestModel(service, requestModel);
 		serviceDao.update(service);
@@ -70,9 +70,9 @@ public class ServiceHandler {
 
 	public void deleteServiceById(long id, String user) {
 		Service service = serviceDao.getById(id);
-		if (service == null) {
+		if (service == null) 
 			throw new IllegalArgumentException(String.format("Not able to find the servie with id: %d", id));
-		}
+		
 		ServiceUtil.validUser(service, user);
 		serviceDao.delete(id);
 	}

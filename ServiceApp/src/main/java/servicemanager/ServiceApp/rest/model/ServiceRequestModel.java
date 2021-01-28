@@ -24,6 +24,5 @@ public class ServiceRequestModel {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
 	
 }
