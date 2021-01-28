@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="zca.test" transaction-type="RESOURCE_LOCAL">
+		<description>Persistence Unit</description>
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+		<class>servicemanager.ServiceApp.entities.Servie</class>
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/serviceapp" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="Pass1234" />
+
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.connection.pool_size" value="20" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="cache.provider_class" value="org.hibernate.cache.internal.NoCacheProvider" />
+			<property name="hibernate.id.new_generator_mappings" value="true" />
+		</properties>
+
+	</persistence-unit>
+</persistence>
