@@ -1,6 +1,7 @@
 package servicemanager.ServiceApp.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -11,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import servicemanager.ServiceApp.entities.Service;
+import servicemanager.ServiceApp.entities.enums.ServiceState;
 
 /**
  * 
@@ -58,5 +60,11 @@ public class ServiceDao {
 	public void delete(long id) {
 		Service service = getById(id);
 		em.remove(service);
+	}
+
+	public void updateServieState(long id, ServiceState state) {
+		Service service = getById(id);
+		service.setServiceState(state);
+		service.setUpdateDate(new Date());
 	}
 }

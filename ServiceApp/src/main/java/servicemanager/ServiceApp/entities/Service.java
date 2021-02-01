@@ -45,7 +45,7 @@ public class Service {
 
 	@Column(name =  "Servie_State", length = 10, nullable = false)
 	@Enumerated(EnumType.STRING)
-	private ServiceState serviceState = ServiceState.LIVE;
+	private ServiceState serviceState = ServiceState.OK;
 
 	@Column(name =  "Created_By", length = 50, nullable = false)
 	private String createdBy;
