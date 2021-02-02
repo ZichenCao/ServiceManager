@@ -1,5 +1,9 @@
 package servicemanager.ServiceApp.poller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -25,7 +29,7 @@ public class ServicePoller {
 	public void setServiceDao(ServiceDao serviceDao) {
 		this.serviceDao = serviceDao;
 	}
-	
+
 	@Inject
 	public void setServiceClient(ServiceClient serviceClient) {
 		this.serviceClient = serviceClient;
@@ -40,16 +44,48 @@ public class ServicePoller {
 	 */
 	@Schedule(hour = "*", minute = "*/15", persistent = false)
 	public void pollServices() {
-		serviceDao.getAllServices().forEach(this::updateServiceState);
+		//serviceDao.getAllServices().forEach(this::updateServiceState);
+		
+		int batchSize = 100; 
+		List<Service> allServices = serviceDao.getAllServices();
+		int rows = allServices.size()/batchSize + 1;
+		IntStream.range(0, rows).mapToObj(r -> allServices.subList(r*rows, Math.min(allServices.size(), rows + rows*r)))
+				.forEach(this::createNewThread);
+	}
+	
+	/**
+	 * Ofc this one need to discussed as well, depends on cpu, memory etc.
+	 * @param services
+	 */
+	private void createNewThread(List<Service> services) {
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				services.forEach(this::updateServiceState);
+			}
+			
+			private void updateServiceState(Service service) {
+				try {
+					Response response = serviceClient.sendGet(service.getUrl());
+					ServiceState state = getState(response);
+					serviceDao.updateServieState(service.getId(), state);
+				} catch (ProcessingException e) {
+					serviceDao.updateServieState(service.getId(), ServiceState.FAIL);
+				}
+			}
+		});
+		t.run();
 	}
 
 	private void updateServiceState(Service service) {
 		try {
 			Response response = serviceClient.sendGet(service.getUrl());
 			ServiceState state = getState(response);
-			serviceDao.updateServieState(service.getId(), state);			
+			serviceDao.updateServieState(service.getId(), state);
 		} catch (ProcessingException e) {
-			serviceDao.updateServieState(service.getId(), ServiceState.FAIL);			
+			serviceDao.updateServieState(service.getId(), ServiceState.FAIL);
 		}
 	}
 
